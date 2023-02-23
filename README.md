@@ -105,9 +105,6 @@ Here are some samples:
     }
     ```
 
-### Unit Test
-- [Code coverage report](CoverageReport/index.html)  
-
 ### Benchmark Test
 The library comes with benchmark tests that compare its Encode and Decode performance to the jwt-cpp library. To run the benchmark tests, modify the CmakeLists.txt:
 ```

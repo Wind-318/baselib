@@ -1,5 +1,7 @@
 # C++ Utils
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c26d34f7adb44e13b7f8d51355e1ed28)](https://app.codacy.com/gh/Wind-318/wind?utm_source=github.com&utm_medium=referral&utm_content=Wind-318/wind&utm_campaign=Badge_Grade_Settings)
+
 ## PWT (Protobuf Web Token)
 
 This is a C++ library for encoding and decoding web tokens using Protocol Buffers (protobuf) and OpenSSL. The library provides a simple and efficient way to create and verify web tokens.

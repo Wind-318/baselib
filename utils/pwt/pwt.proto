@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package wind.utils.pwt;
+
+message HeaderMessage {
+    bytes typ = 1;
+    bytes kid = 2;
+    bytes pwk = 3;
+    bytes x5u = 4;
+    repeated CustomMessage custom = 5;
+}
+
+message PayloadMessage {
+    bytes sub = 1;
+    bytes iss = 2;
+    bytes aud = 3;
+    repeated string aud_vec = 4;
+    google.protobuf.Timestamp exp = 5;
+    google.protobuf.Timestamp nbf = 6;
+    google.protobuf.Timestamp iat = 7;
+    bytes pbi = 8;
+    repeated CustomMessage custom = 9;
+}
+
+message InstanceMessage {
+    bytes head = 1;
+    bytes custom = 2;
+}
+
+message PWTMessage {
+    bytes header = 1;
+    bytes payload = 2;
+    bytes signature = 3;
+}
+
+message CustomMessage {
+    bytes key = 1;
+    bytes value = 2;
+}

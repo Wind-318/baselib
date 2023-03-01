@@ -91,7 +91,7 @@ int main() {
         // handle
     }
 
-    if (pwt_obj.IsTokenValid()) {
+    if (pwt_obj.IsTokenValid(token)) {
         // handle
     }
 

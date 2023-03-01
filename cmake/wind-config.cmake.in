@@ -1,0 +1,24 @@
+# Set variables for package configuration file
+set(WIND_INCLUDE_DIRS "@WIND_INCLUDE_DIR@")
+set(WIND_LIBRARY_DIRS "@WIND_LIBRARY_DIRS@")
+
+# Find dependencies
+find_dependency(Protobuf REQUIRED)
+find_dependency(OpenSSL REQUIRED)
+
+# Create target
+add_library(Wind::WindStatic STATIC IMPORTED)
+set_target_properties(Wind::WindStatic PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "WIND_STATIC_DEFINE"
+  IMPORTED_LOCATION "${WIND_LIBRARY_DIRS}/libWindStatic.a"
+)
+
+add_library(Wind::WindShared SHARED IMPORTED)
+set_target_properties(Wind::WindShared PROPERTIES
+  INTERFACE_COMPILE_DEFINITIONS "WIND_SHARED_DEFINE"
+  IMPORTED_LOCATION "${WIND_LIBRARY_DIRS}/libWindShared.so"
+)
+
+# Set target properties
+set_property(TARGET Wind::WindStatic PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${WIND_INCLUDE_DIRS}/wind")
+set_property(TARGET Wind::WindShared PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${WIND_INCLUDE_DIRS}/wind")

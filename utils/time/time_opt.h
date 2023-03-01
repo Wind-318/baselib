@@ -1,5 +1,5 @@
 /**
- * @file encrypt.cc
+ * @file time_opt.h
  * @author Wind
  * @date 2023-02-21
  *
@@ -38,37 +38,6 @@ namespace wind {
             }
 
             /**
-             * @brief Get the Timestamp String object
-             *
-             * @param seconds The number of seconds to add to the current time
-             * @param remain The number of digits to remain after the decimal point
-             * @return const std::string
-             *
-             * @note Sample output: xxxx-xx-xx 00:00:00.000
-             */
-            inline const std::string GetTimestampString(const unsigned& seconds = 0, size_t remain = 3) noexcept {
-                const auto now = std::chrono::system_clock::now() + std::chrono::seconds(seconds);
-                ::google::protobuf::Timestamp timestamp;
-                timestamp.set_seconds(std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count());
-                timestamp.set_nanos(std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count() % 1000000000);
-
-                std::time_t time = std::chrono::system_clock::to_time_t(now);
-
-                char buffer[20];
-                std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", std::gmtime(&time));
-
-                std::string result(buffer);
-                auto nanos = std::to_string(timestamp.nanos());
-                if (nanos.size() > remain) {
-                    nanos = nanos.substr(nanos.size() - remain);
-                }
-                std::string zeros(remain - nanos.size(), '0');
-                result += "." + zeros + nanos;
-
-                return result;
-            }
-
-            /**
              * @brief Convert a Timestamp object to a string
              *
              * @param timestamp The Timestamp object to be converted
@@ -90,6 +59,19 @@ namespace wind {
                 result += "." + zeros + nanos;
 
                 return result;
+            }
+
+            /**
+             * @brief Get the Timestamp String object
+             *
+             * @param seconds The number of seconds to add to the current time
+             * @param remain The number of digits to remain after the decimal point
+             * @return const std::string
+             *
+             * @note Sample output: xxxx-xx-xx 00:00:00.000
+             */
+            inline const std::string GetTimestampString(const unsigned& seconds = 0, size_t remain = 3) noexcept {
+                return TimestampToString(GetTimestamp(seconds), remain);
             }
         }  // namespace time
     }      // namespace utils

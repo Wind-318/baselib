@@ -1,5 +1,5 @@
 /**
- * @file encrypt.cc
+ * @file pwt.cc
  * @author Wind
  * @date 2023-02-21
  *
@@ -37,7 +37,7 @@ namespace wind {
              * @note How to use:
              * @code
              * PWTHeaderBase header;
-             * header.SetTyp("JWT");
+             * header.SetTyp("PWT");
              * header.Encode();
              * @endcode
              */
@@ -55,21 +55,15 @@ namespace wind {
                 }
                 // Serialize the header
                 InstanceMessage ist_msg;
-                if (!header.SerializeToString(ist_msg.mutable_head())) {
+                try {
+                    ist_msg.set_head(header.SerializeAsString());
+                    if (custom_headers_.has_value()) {
+                        ist_msg.set_custom(custom_headers_->SerializeAsString());
+                    }
+                    return ist_msg.SerializeAsString();
+                } catch (const std::exception& e) {
                     throw std::runtime_error("Failed to serialize header");
                 }
-                // Serialize the custom header
-                if (custom_headers_.has_value()) {
-                    if (!custom_headers_->SerializeToString(ist_msg.mutable_custom())) {
-                        throw std::runtime_error("Failed to serialize custom header");
-                    }
-                }
-                // Serialize the instance message
-                std::string result;
-                if (!ist_msg.SerializeToString(&result)) {
-                    throw std::runtime_error("Failed to serialize PWT message");
-                }
-                return result;
             }
 
             /**

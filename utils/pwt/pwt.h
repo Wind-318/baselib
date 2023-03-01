@@ -1,5 +1,5 @@
 /**
- * @file encrypt.cc
+ * @file pwt.h
  * @author Wind
  * @date 2023-02-21
  *
@@ -27,6 +27,7 @@
 #include <variant>
 #include <vector>
 
+#include "atomic_unordered_map.h"
 #include "encrypt.h"
 #include "time_opt.h"
 
@@ -37,6 +38,23 @@ namespace wind {
              * @brief Base class for PWTHeader
              */
             class PWTHeader {
+            private:
+                inline void CopyConstructor(const PWTHeader& header) noexcept {
+                    this->typ_ = header.typ_;
+                    this->kid_ = header.kid_;
+                    this->pwk_ = header.pwk_;
+                    this->x5u_ = header.x5u_;
+                    this->custom_fields_ = header.custom_fields_;
+                    if (header.custom_headers_.has_value()) {
+                        if (!this->custom_headers_.has_value()) {
+                            this->custom_headers_ = ::google::protobuf::Any();
+                        }
+                        this->custom_headers_->CopyFrom(*header.custom_headers_);
+                    } else {
+                        this->custom_headers_ = std::nullopt;
+                    }
+                }
+
             public:
                 // The type of the token
                 std::string typ_;
@@ -68,6 +86,12 @@ namespace wind {
                  * @return false If the message is not successfully decoded
                  */
                 virtual bool Decode(const std::string& msg) noexcept = 0;
+                /**
+                 * @brief Clone the header
+                 *
+                 * @return std::unique_ptr<PWTHeader> A unique pointer to the cloned header
+                 */
+                virtual std::unique_ptr<PWTHeader> Clone() const noexcept = 0;
 
                 inline explicit PWTHeader(const std::string& typ, const std::string& kid,
                                           const std::string& pwk, const std::string& x5u,
@@ -87,36 +111,14 @@ namespace wind {
                 }
 
                 inline PWTHeader(const PWTHeader& header) noexcept {
-                    if (this == &header) {
-                        return;
-                    }
-                    this->typ_ = header.typ_;
-                    this->kid_ = header.kid_;
-                    this->pwk_ = header.pwk_;
-                    this->x5u_ = header.x5u_;
-                    this->custom_fields_ = header.custom_fields_;
-                    // Copy the custom headers
-                    if (header.custom_headers_.has_value()) {
-                        custom_headers_->CopyFrom(*header.custom_headers_);
-                    } else {
-                        custom_headers_ = std::nullopt;
+                    if (this != &header) {
+                        CopyConstructor(header);
                     }
                 }
 
                 inline PWTHeader& operator=(const PWTHeader& header) noexcept {
-                    if (this == &header) {
-                        return *this;
-                    }
-                    typ_ = header.typ_;
-                    kid_ = header.kid_;
-                    pwk_ = header.pwk_;
-                    x5u_ = header.x5u_;
-                    custom_fields_ = header.custom_fields_;
-                    // Copy the custom headers
-                    if (header.custom_headers_.has_value()) {
-                        custom_headers_->CopyFrom(*header.custom_headers_);
-                    } else {
-                        custom_headers_ = std::nullopt;
+                    if (this != &header) {
+                        CopyConstructor(header);
                     }
                     return *this;
                 }
@@ -142,6 +144,10 @@ namespace wind {
                 inline PWTHeaderBase& operator=(const PWTHeaderBase& header) noexcept = default;
 
                 PWTHeaderBase& operator=(PWTHeaderBase&&) noexcept = default;
+
+                std::unique_ptr<PWTHeader> Clone() const noexcept {
+                    return std::make_unique<PWTHeaderBase>(*this);
+                }
                 /**
                  * @brief Encode the header to a string
                  *
@@ -165,6 +171,56 @@ namespace wind {
              * @brief Base class for PWTPayload
              */
             class PWTPayload {
+            private:
+                inline void CopyConstructor(const PWTPayload& payload) noexcept {
+                    if (this == &payload) {
+                        return;
+                    }
+                    this->iss_ = payload.iss_;
+                    this->sub_ = payload.sub_;
+                    this->aud_ = payload.aud_;
+                    this->nbf_ = payload.nbf_;
+                    this->iat_ = payload.iat_;
+                    this->exp_ = payload.exp_;
+                    try {
+                        this->pbi_ = GeneratePbi();
+                    } catch (std::exception& e) {
+                        this->pbi_ = "";
+                    }
+                    if (payload.custom_payloads_.has_value()) {
+                        if (!custom_payloads_.has_value()) {
+                            custom_payloads_ = ::google::protobuf::Any();
+                        }
+                        custom_payloads_->CopyFrom(*payload.custom_payloads_);
+                    } else {
+                        custom_payloads_ = std::nullopt;
+                    }
+                }
+
+                inline void InitConstructor(const std::string& iss, const std::string& sub,
+                                            const std::variant<std::string, std::vector<std::string>>& aud,
+                                            const unsigned& exp, const unsigned& nbf, const unsigned& iat,
+                                            const std::optional<::google::protobuf::Any>& custom_payloads) noexcept {
+                    this->iss_ = iss;
+                    this->sub_ = sub;
+                    this->aud_ = std::variant<std::string, std::vector<std::string>>(aud);
+                    this->nbf_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(nbf));
+                    this->iat_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(iat));
+                    this->exp_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(exp));
+                    custom_payloads_ = std::optional<::google::protobuf::Any>(custom_payloads);
+                    try {
+                        this->pbi_ = GeneratePbi();
+                    } catch (std::exception& e) {
+                        this->pbi_ = "";
+                    }
+
+                    if (exp < iat || nbf > exp) {
+                        this->exp_ = std::nullopt;
+                        this->nbf_ = std::nullopt;
+                        this->iat_ = std::nullopt;
+                    }
+                }
+
             public:
                 // The issuer of the token
                 std::string iss_;
@@ -206,6 +262,12 @@ namespace wind {
                  * @return false The token is not expired
                  */
                 virtual bool IsExpired() const noexcept = 0;
+                /**
+                 * @brief Clone the payload
+                 *
+                 * @return std::unique_ptr<PWTPayload> The cloned payload
+                 */
+                virtual std::unique_ptr<PWTPayload> Clone() const noexcept = 0;
 
                 /**
                  * @brief Generate a random PBI.
@@ -220,45 +282,17 @@ namespace wind {
 
                 inline explicit PWTPayload(const std::string& iss, const std::string& sub, const std::string& aud,
                                            const std::optional<::google::protobuf::Any>& custom_payloads = std::nullopt,
-                                           const unsigned& exp = 3600, const unsigned& nbf = 0, const unsigned& iat = 0) {
-                    this->iss_ = iss;
-                    this->sub_ = sub;
-                    this->aud_ = std::variant<std::string, std::vector<std::string>>(aud);
-                    this->nbf_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(nbf));
-                    this->iat_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(iat));
-                    this->exp_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(exp));
-                    custom_payloads_ = std::optional<::google::protobuf::Any>(custom_payloads);
-                    try {
-                        this->pbi_ = GeneratePbi();
-                    } catch (std::exception& e) {
-                        throw;
-                    }
-
-                    if (exp < iat) {
-                        throw std::invalid_argument("Expiration time must be greater than the issued at time");
-                    } else if (nbf > exp) {
-                        throw std::invalid_argument("Expiration time must be greater than the issued at time");
-                    }
+                                           const unsigned& exp = 3600, const unsigned& nbf = 0, const unsigned& iat = 0) noexcept {
+                    InitConstructor(iss, sub, aud, exp, nbf, iat, custom_payloads);
                 }
 
                 inline explicit PWTPayload(const std::string& iss, const std::string& sub, const std::vector<std::string>& aud,
                                            const std::optional<::google::protobuf::Any>& custom_payloads = std::nullopt,
-                                           const unsigned& exp = 3600, const unsigned& nbf = 0, const unsigned& iat = 0) {
-                    this->iss_ = iss;
-                    this->sub_ = sub;
-                    this->aud_ = std::variant<std::string, std::vector<std::string>>(aud);
-                    this->nbf_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(nbf));
-                    this->iat_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(iat));
-                    this->exp_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(exp));
-                    custom_payloads_ = std::optional<::google::protobuf::Any>(custom_payloads);
-                    try {
-                        this->pbi_ = GeneratePbi();
-                    } catch (std::exception& e) {
-                        throw;
-                    }
+                                           const unsigned& exp = 3600, const unsigned& nbf = 0, const unsigned& iat = 0) noexcept {
+                    InitConstructor(iss, sub, aud, exp, nbf, iat, custom_payloads);
                 }
 
-                inline explicit PWTPayload() {
+                inline explicit PWTPayload() noexcept {
                     this->nbf_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(0));
                     this->iat_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(0));
                     this->exp_ = std::optional<::google::protobuf::Timestamp>(::wind::utils::time::GetTimestamp(3600));
@@ -266,51 +300,19 @@ namespace wind {
                     try {
                         this->pbi_ = GeneratePbi();
                     } catch (std::exception& e) {
-                        throw;
+                        this->pbi_ = "";
                     }
                 }
 
-                inline PWTPayload(const PWTPayload& payload) {
-                    if (this == &payload) {
-                        return;
-                    }
-                    this->iss_ = payload.iss_;
-                    this->sub_ = payload.sub_;
-                    this->aud_ = payload.aud_;
-                    this->nbf_ = payload.nbf_;
-                    this->iat_ = payload.iat_;
-                    this->exp_ = payload.exp_;
-                    try {
-                        this->pbi_ = GeneratePbi();
-                    } catch (std::exception& e) {
-                        throw;
-                    }
-                    if (payload.custom_payloads_.has_value()) {
-                        custom_payloads_->CopyFrom(*payload.custom_payloads_);
-                    } else {
-                        custom_payloads_ = std::nullopt;
+                inline PWTPayload(const PWTPayload& payload) noexcept {
+                    if (this != &payload) {
+                        CopyConstructor(payload);
                     }
                 }
 
                 inline PWTPayload& operator=(const PWTPayload& payload) {
-                    if (this == &payload) {
-                        return *this;
-                    }
-                    iss_ = payload.iss_;
-                    sub_ = payload.sub_;
-                    aud_ = payload.aud_;
-                    nbf_ = payload.nbf_;
-                    iat_ = payload.iat_;
-                    exp_ = payload.exp_;
-                    try {
-                        this->pbi_ = GeneratePbi();
-                    } catch (std::exception& e) {
-                        throw;
-                    }
-                    if (payload.custom_payloads_.has_value()) {
-                        custom_payloads_->CopyFrom(*payload.custom_payloads_);
-                    } else {
-                        custom_payloads_ = std::nullopt;
+                    if (this != &payload) {
+                        CopyConstructor(payload);
                     }
                     return *this;
                 }
@@ -340,6 +342,10 @@ namespace wind {
                 inline PWTPayloadBase& operator=(const PWTPayloadBase& payload) = default;
 
                 PWTPayloadBase& operator=(PWTPayloadBase&&) noexcept = default;
+
+                std::unique_ptr<PWTPayload> Clone() const noexcept {
+                    return std::make_unique<PWTPayloadBase>(*this);
+                }
                 /**
                  * @brief Encode the header to a string.
                  *
@@ -398,6 +404,35 @@ namespace wind {
                 // A unique pointer to the crypto algorithm, pointing to a derived class of Algorithm.
                 std::unique_ptr<::wind::utils::encrypt::Algorithm> crypto_;
 
+                inline void CopyConstructor(const PWTInstance& other) {
+                    if (this != &other) {
+                        if (other.header_) {
+                            this->header_ = other.header_->Clone();
+                        }
+                        if (other.payload_) {
+                            this->payload_ = other.payload_->Clone();
+                        }
+                        if (other.crypto_) {
+                            this->crypto_ = other.crypto_->Clone();
+                        }
+                    }
+                }
+
+                inline void MoveConstructor(PWTInstance&& other_pwt) noexcept {
+                    if (this == &other_pwt) {
+                        return;
+                    }
+                    if (other_pwt.header_) {
+                        this->header_ = std::move(other_pwt.header_);
+                    }
+                    if (other_pwt.payload_) {
+                        this->payload_ = std::move(other_pwt.payload_);
+                    }
+                    if (other_pwt.crypto_) {
+                        this->crypto_ = std::move(other_pwt.crypto_);
+                    }
+                }
+
                 /**
                  * @brief Sign the string with the crypto algorithm.
                  *
@@ -430,15 +465,19 @@ namespace wind {
                  * @param s The token.
                  * @return true If the token is valid.
                  * @return false If the token is invalid.
+                 *
+                 * @throw std::invalid_argument If the string to be signed is empty.
+                 * @throw std::invalid_argument If the crypto algorithm is empty.
+                 * @throw std::runtime_error If the string cannot be signed.
                  */
                 inline bool IsTokenValid(const std::string& s) const {
-                    PWTMessage jwt_msg;
-                    if (!jwt_msg.ParseFromString(s)) {
+                    PWTMessage pwt_msg;
+                    if (!pwt_msg.ParseFromString(s)) {
                         return false;
                     }
-                    auto header_str = jwt_msg.header();
-                    auto payload_str = jwt_msg.payload();
-                    auto signature = jwt_msg.signature();
+                    auto header_str = pwt_msg.header();
+                    auto payload_str = pwt_msg.payload();
+                    auto signature = pwt_msg.signature();
                     return signature == Sign(header_str + payload_str);
                 }
 
@@ -522,10 +561,10 @@ namespace wind {
                  * @note If the header is not provided, the default header will be used.
                  */
                 inline explicit PWTInstance(std::unique_ptr<PWTHeader>&& header = nullptr, std::unique_ptr<PWTPayload>&& payload = nullptr,
-                                            std::unique_ptr<::wind::utils::encrypt::Algorithm>&& crypto = nullptr) {
+                                            std::unique_ptr<::wind::utils::encrypt::Algorithm>&& crypto = nullptr) noexcept {
                     static_assert(std::is_base_of_v<PWTHeader, Header>, "Header must be derived from PWTHeader");
                     static_assert(std::is_base_of_v<PWTPayload, Payload>, "Payload must be derived from PWTPayload");
-                    static_assert(std::is_base_of_v<::wind::utils::encrypt::AlgorithmBase, Algorithm>, "Algorithm must be derived from AlgorithmBase");
+                    static_assert(std::is_base_of_v<::wind::utils::encrypt::Algorithm, Algorithm>, "Algorithm must be derived from AlgorithmBase");
                     if (header) {
                         this->header_ = std::move(header);
                     } else {
@@ -534,11 +573,7 @@ namespace wind {
                     if (payload) {
                         this->payload_ = std::move(payload);
                     } else {
-                        try {
-                            this->payload_ = std::make_unique<Payload>();
-                        } catch (std::exception& e) {
-                            throw;
-                        }
+                        this->payload_ = std::make_unique<Payload>();
                     }
                     if (crypto) {
                         this->crypto_ = std::move(crypto);
@@ -549,99 +584,26 @@ namespace wind {
 
                 inline PWTInstance(PWTInstance& other) noexcept {
                     if (this != &other) {
-                        this->header_ = std::make_unique<Header>();
-                        this->payload_ = std::make_unique<Payload>();
-                        this->crypto_ = std::make_unique<Algorithm>();
-                        if (other.header_) {
-                            this->header_->pwk_ = other.header_->pwk_;
-                            this->header_->x5u_ = other.header_->x5u_;
-                            this->header_->custom_fields_ = other.header_->custom_fields_;
-                            this->header_->custom_headers_ = other.header_->custom_headers_;
-                            this->header_->kid_ = other.header_->kid_;
-                            this->header_->typ_ = other.header_->typ_;
-                        }
-                        if (other.payload_) {
-                            this->payload_->custom_fields_ = other.payload_->custom_fields_;
-                            this->payload_->custom_payloads_ = other.payload_->custom_payloads_;
-                            this->payload_->exp_ = other.payload_->exp_;
-                            this->payload_->iat_ = other.payload_->iat_;
-                            this->payload_->iss_ = other.payload_->iss_;
-                            this->payload_->nbf_ = other.payload_->nbf_;
-                            this->payload_->sub_ = other.payload_->sub_;
-                            this->payload_->aud_ = other.payload_->aud_;
-                            this->payload_->pbi_ = this->payload_->GeneratePbi();
-                        }
-                        if (other.crypto_) {
-                            this->crypto_->data_ = other.crypto_->data_;
-                            this->crypto_->key_ = other.crypto_->key_;
-                            this->crypto_->iv_ = other.crypto_->iv_;
-                            this->crypto_->salt_ = other.crypto_->salt_;
-                        }
+                        CopyConstructor(other);
                     }
                 }
 
                 inline PWTInstance(PWTInstance&& other) noexcept {
-                    if (other.header_) {
-                        this->header_ = std::move(other.header_);
-                        other.header_ = nullptr;
-                    }
-                    if (other.payload_) {
-                        this->payload_ = std::move(other.payload_);
-                        other.payload_ = nullptr;
-                    }
-                    if (other.crypto_) {
-                        this->crypto_ = std::move(other.crypto_);
-                        other.crypto_ = nullptr;
+                    if (this != &other) {
+                        MoveConstructor(std::forward<PWTInstance>(other));
                     }
                 }
 
                 inline PWTInstance& operator=(const PWTInstance& other) {
-                    if (this == &other) {
-                        return *this;
-                    }
-                    this->header_ = std::make_unique<Header>();
-                    this->payload_ = std::make_unique<Payload>();
-                    this->crypto_ = std::make_unique<Algorithm>();
-                    if (other.header_) {
-                        this->header_->pwk_ = other.header_->pwk_;
-                        this->header_->x5u_ = other.header_->x5u_;
-                        this->header_->custom_fields_ = other.header_->custom_fields_;
-                        this->header_->custom_headers_ = other.header_->custom_headers_;
-                        this->header_->kid_ = other.header_->kid_;
-                        this->header_->typ_ = other.header_->typ_;
-                    }
-                    if (other.payload_) {
-                        this->payload_->custom_fields_ = other.payload_->custom_fields_;
-                        this->payload_->custom_payloads_ = other.payload_->custom_payloads_;
-                        this->payload_->exp_ = other.payload_->exp_;
-                        this->payload_->iat_ = other.payload_->iat_;
-                        this->payload_->iss_ = other.payload_->iss_;
-                        this->payload_->nbf_ = other.payload_->nbf_;
-                        this->payload_->sub_ = other.payload_->sub_;
-                        this->payload_->aud_ = other.payload_->aud_;
-                        this->payload_->pbi_ = this->payload_->GeneratePbi();
-                    }
-                    if (other.crypto_) {
-                        this->crypto_->data_ = other.crypto_->data_;
-                        this->crypto_->key_ = other.crypto_->key_;
-                        this->crypto_->iv_ = other.crypto_->iv_;
-                        this->crypto_->salt_ = other.crypto_->salt_;
+                    if (this != &other) {
+                        CopyConstructor(other);
                     }
                     return *this;
                 }
 
                 inline PWTInstance& operator=(PWTInstance&& other) noexcept {
-                    if (this->header_) {
-                        this->header_ = std::move(other.header_);
-                        other.header_ = nullptr;
-                    }
-                    if (this->payload_) {
-                        this->payload_ = std::move(other.payload_);
-                        other.payload_ = nullptr;
-                    }
-                    if (this->crypto_) {
-                        this->crypto_ = std::move(other.crypto_);
-                        other.crypto_ = nullptr;
+                    if (this != &other) {
+                        MoveConstructor(std::forward<PWTInstance>(other));
                     }
                     return *this;
                 }
@@ -1010,6 +972,20 @@ namespace wind {
                     tmp->salt_ = other.GetCrypto()->salt_;
                     this->crypto_ = std::move(tmp);
                     return *this;
+                }
+
+                inline PWTInstance Clone() const noexcept {
+                    PWTInstance tmp;
+                    if (this->header_) {
+                        tmp.header_ = this->header_->Clone();
+                    }
+                    if (this->payload_) {
+                        tmp.payload_ = this->payload_->Clone();
+                    }
+                    if (this->crypto_) {
+                        tmp.crypto_ = this->crypto_->Clone();
+                    }
+                    return tmp;
                 }
             };
 

@@ -1,5 +1,5 @@
 /**
- * @file encrypt.cc
+ * @file encrypt.h
  * @author Wind
  * @date 2023-02-21
  *
@@ -75,6 +75,12 @@ namespace wind {
                  * @return std::string The encrypted data.
                  */
                 virtual std::string Encrypt() const = 0;
+                /**
+                 * @brief Clone the current object.
+                 *
+                 * @return std::unique_ptr<Algorithm> The cloned object.
+                 */
+                virtual std::unique_ptr<Algorithm> Clone() const noexcept = 0;
                 virtual ~Algorithm() = default;
 
                 Algorithm() noexcept {
@@ -111,6 +117,10 @@ namespace wind {
                  * @return std::string The encrypted data.
                  */
                 std::string Encrypt() const;
+
+                std::unique_ptr<Algorithm> Clone() const noexcept {
+                    return std::make_unique<AlgorithmBase>(*this);
+                }
 
                 inline explicit AlgorithmBase() noexcept : Algorithm() {}
 

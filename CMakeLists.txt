@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24.3)
-project(wind CXX)
+project(Wind CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 message(STATUS "Use C++20")
@@ -37,6 +37,7 @@ find_package(OpenSSL REQUIRED)
 
 # Include directories
 include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/wind
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/time
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt
     ${CMAKE_CURRENT_SOURCE_DIR}/utils/pwt
@@ -44,6 +45,8 @@ include_directories(
 
 # Gather source files
 file(GLOB_RECURSE WIND_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/wind/*.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/wind/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/utils/time/*.h"
     "${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt/*.cc"
     "${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt/*.h"
@@ -64,17 +67,41 @@ add_library(WindStatic STATIC ${ALL_SOURCES})
 target_link_libraries(WindStatic PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(WindStatic PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 
+set(WIND_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/wind")
+set(WIND_LIBRARY_DIRS "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/Wind")
+
 install(TARGETS WindShared WindStatic
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+    LIBRARY DESTINATION ${WIND_LIBRARY_DIRS}
+    ARCHIVE DESTINATION ${WIND_LIBRARY_DIRS}
+)
 
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/utils/
-        DESTINATION include/wind
-        FILES_MATCHING PATTERN "*.h")
+    DESTINATION ${WIND_INCLUDE_DIR}/utils
+    FILES_MATCHING PATTERN "*.h"
+)
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/utils/
-        DESTINATION include/wind
-        FILES_MATCHING PATTERN "*.cc")
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/wind/
+    DESTINATION ${WIND_INCLUDE_DIR}
+    FILES_MATCHING PATTERN "*.h"
+)
+
+# Configure wind-config.cmake and wind-config-version.cmake
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/wind-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake/wind-config.cmake
+    INSTALL_DESTINATION ${WIND_LIBRARY_DIRS}/cmake/Wind
+    PATH_VARS WIND_INCLUDE_DIR WIND_LIBRARY_DIRS
+)
+
+# Install wind-config.cmake and wind-config-version.cmake
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/cmake/wind-config.cmake
+    DESTINATION
+        ${WIND_LIBRARY_DIRS}/cmake/Wind
+)
 
 if (BUILD_TESTS)
   add_subdirectory(test)

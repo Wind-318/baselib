@@ -10,11 +10,12 @@ set(CMAKE_CXX_STANDARD 20)
 message(STATUS "Use C++20")
 
 set(TEST_SRC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/pwt_test.pb.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/pwt_test.pb.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/time_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/encrypt_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/pwt_test.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/pwt_test.pb.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/pwt_test.pb.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/time_test.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/encrypt_test.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/pwt_test.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/wind/atomic_data_structure_test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/benchmark/pwt_benchmark.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cc
 )

@@ -1,6 +1,6 @@
 # Wind C++ Utils
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://www.codacy.com/gh/Wind-318/wind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/wind&amp;utm_campaign=Badge_Grade)[![codecov](https://codecov.io/gh/Wind-318/wind/branch/main/graph/badge.svg?token=4NM2T52NFZ)](https://codecov.io/gh/Wind-318/wind) ![](https://img.shields.io/github/license/Wind-318/wind) ![](https://img.shields.io/github/actions/workflow/status/Wind-318/wind/main.yml) ![](https://img.shields.io/github/stars/Wind-318/wind?style=plastic)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://www.codacy.com/gh/Wind-318/wind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/wind&amp;utm_campaign=Badge_Grade) ![](https://img.shields.io/codecov/c/github/Wind-318/wind) ![](https://img.shields.io/github/license/Wind-318/wind) ![](https://img.shields.io/github/actions/workflow/status/Wind-318/wind/main.yml) ![](https://img.shields.io/github/stars/Wind-318/wind?style=plastic)
 
 ## PWT - Protobuf Web Token
 

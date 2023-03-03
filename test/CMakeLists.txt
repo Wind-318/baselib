@@ -15,7 +15,7 @@ set(TEST_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/time_test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/encrypt_test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/pwt_test.cc
-    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/wind/atomic_data_structure_test.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/unit_test/utils/atomic_data_structure_test.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/benchmark/pwt_benchmark.cc
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cc
 )
@@ -25,6 +25,6 @@ target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
 target_link_libraries(${PROJECT_NAME} PRIVATE protobuf::libprotobuf)
 target_link_libraries(${PROJECT_NAME} PRIVATE GTest::gmock GTest::gtest GTest::gmock_main GTest::gtest_main)
 target_link_libraries(${PROJECT_NAME} PRIVATE benchmark::benchmark benchmark::benchmark_main)
-target_link_libraries(${PROJECT_NAME} PRIVATE WindStatic)
+target_link_libraries(${PROJECT_NAME} PRIVATE wind-static)
 
 gtest_discover_tests(${PROJECT_NAME})

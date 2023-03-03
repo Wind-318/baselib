@@ -1,6 +1,6 @@
 # Wind C++ Utils
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://www.codacy.com/gh/Wind-318/wind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/wind&amp;utm_campaign=Badge_Grade) [![codecov](https://img.shields.io/codecov/c/github/Wind-318/wind)](https://codecov.io/gh/Wind-318/wind) [![](https://img.shields.io/github/license/Wind-318/wind)](./LICENCE) [![](https://img.shields.io/github/actions/workflow/status/Wind-318/wind/main.yml)](https://github.com/Wind-318/wind/actions) [![](https://img.shields.io/github/stars/Wind-318/wind?style=plastic)](https://github.com/Wind-318/wind/stargazers)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://www.codacy.com/gh/Wind-318/wind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/wind&amp;utm_campaign=Badge_Grade) [![codecov](https://img.shields.io/codecov/c/github/Wind-318/wind)](https://codecov.io/gh/Wind-318/wind) [![](https://img.shields.io/github/license/Wind-318/wind)](./LICENCE) [![](https://img.shields.io/github/actions/workflow/status/Wind-318/wind/main.yml)](https://github.com/Wind-318/wind/actions) [![](https://img.shields.io/github/stars/Wind-318/wind?style=plastic)](https://github.com/Wind-318/wind/stargazers) [![Download](https://img.shields.io/github/downloads/Wind-318/wind/total)](https://github.com/Wind-318/wind/releases/)
 
 ## PWT - Protobuf Web Token
 
@@ -11,48 +11,63 @@ This is a C++ 17 library that uses Protocol Buffers (protobuf) and OpenSSL to ef
 - Implement multi-thread support
 - Ensure thread safety
 
-### Benchmark Test
-The library comes with benchmark tests that compare its Encode and Decode performance to the jwt-cpp library. To run the benchmark tests, modify the CmakeLists.txt:
-```
-option(BUILD_TESTS "Build tests" OFF)
-```
-to
-```
-option(BUILD_TESTS "Build tests" ON)
-```
-and then run the wind_test executable. The benchmark results will be output to the console. Or see the result in [PWT benchmark](docs/utils/pwt_benchmark.md).
-
-### Compile Instructions
-
-To use this library, you'll need to have the following dependencies installed on your system:
-
-- Protocol Buffers (protobuf, preferably the latest version)
-- OpenSSL
-- GTest (required for running unit tests)
-- Google benchmark (required for running benchmark tests)
-
-Once you have these dependencies installed, you can build the library using CMake:
-```
-mkdir build && cd build
-cmake ..
-make
-```
-
 ### Installation
-Todo
+- #### Linux
+  - To use this library in linux, you'll need to have the following dependencies installed on your system:
+    - Protocol Buffers (protobuf, preferably the latest version)
+    - OpenSSL
+    - GTest (required for running unit tests)
+    - Google benchmark (required for running benchmark tests)
+
+    You can install these dependencies on an alpine system using the following command:
+    ```
+    apk add --no-cache cmake gcc g++ make git openssl openssl-dev protobuf-dev protobuf gtest-dev gtest benchmark-dev benchmark
+    ```
+
+  - Download the library using git:
+    ```
+    git clone https://github.com/Wind-318/wind.git
+    ```
+  - Build the library using CMake::
+    ```
+    mkdir build && cd build
+    cmake ..
+    make && make install
+    ```
+
+  - Use the library in your CMake project:
+    ```
+    find_package(Protobuf REQUIRED)
+    find_package(OpenSSL REQUIRED)
+    find_package(Wind REQUIRED)
+
+    add_executable(${PROJECT_NAME} main.cc)
+
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+    target_link_libraries(${PROJECT_NAME} PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Wind::wind)
+    ```
+
+- #### MacOS
+    Todo
+    
+- #### Windows
+    vcpkg: Todo
 
 ### Quick Start
 Here are some samples:
 
 Create a new token:
 ```cpp
-#include <pwt.h>
+#include <wind/utils/pwt.h>
 #include <iostream>
+#include <string>
 
 int main() {
+    std::string s;
     // Create a token
     try {
-        auto s = ::wind::utils::pwt::CreatePWTInstance()
+        s = ::wind::utils::pwt::CreatePWTInstance()
                     .SetExp(3600)
                     .AddPayloadCustomField("userID", "1234546")
                     .AddPayloadCustomField("userName", "wind")
@@ -69,7 +84,7 @@ int main() {
 ```
 Get a new PWT object, encode and decode:  
 ```cpp
-#include <pwt.h>
+#include <wind/utils/pwt.h>
 #include <iostream>
 #include <string>
 
@@ -126,6 +141,17 @@ int main() {
 }
 ```
 
+### Test
+To run the tests, modify the CmakeLists.txt:
+```
+option(BUILD_TESTS "Build tests" OFF)
+```
+to
+```
+option(BUILD_TESTS "Build tests" ON)
+```
+and then run the wind_test executable. The benchmark results can see in [PWT benchmark](docs/utils/pwt_benchmark.md)(v0.0.2).
+
 ***
 ## License
-This library is licensed under the MIT License. See the LICENSE file for more information.
+This library is licensed under the MIT License. See the [LICENSE](./LICENCE) file for more information.

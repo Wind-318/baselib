@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.24.3)
 project(Wind CXX)
 
+# Include the GNUInstallDirs module
+include(GNUInstallDirs)
+
+# Set the installation directories for libraries, headers, and binaries
+set(CMAKE_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR_DEFAULT})
+set(CMAKE_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR_DEFAULT})
+set(CMAKE_INSTALL_BINDIR ${CMAKE_INSTALL_BINDIR_DEFAULT})
+
 set(CMAKE_CXX_STANDARD 20)
 message(STATUS "Use C++20")
 
@@ -37,50 +45,36 @@ find_package(OpenSSL REQUIRED)
 
 # Include directories
 include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}/wind
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils/time
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils/pwt
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 
 # Gather source files
 file(GLOB_RECURSE WIND_SOURCES
-    "${CMAKE_CURRENT_SOURCE_DIR}/wind/*.cc"
-    "${CMAKE_CURRENT_SOURCE_DIR}/wind/*.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/utils/time/*.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt/*.cc"
-    "${CMAKE_CURRENT_SOURCE_DIR}/utils/encrypt/*.h"
-    "${CMAKE_CURRENT_SOURCE_DIR}/utils/pwt/*.cc"
-    "${CMAKE_CURRENT_SOURCE_DIR}/utils/pwt/*.h"
+    "${CMAKE_CURRENT_SOURCE_DIR}/utils/*.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/utils/*.h"
 )
 
 # Set all sources to a variable
 set(ALL_SOURCES ${WIND_SOURCES})
 
 # Add shared library
-add_library(WindShared SHARED ${ALL_SOURCES})
-target_link_libraries(WindShared PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(WindShared PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+add_library(wind SHARED ${ALL_SOURCES})
+target_link_libraries(wind PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(wind PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 
-# Add static library
-add_library(WindStatic STATIC ${ALL_SOURCES})
-target_link_libraries(WindStatic PRIVATE OpenSSL::SSL OpenSSL::Crypto)
-target_link_libraries(WindStatic PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
+add_library(wind-static STATIC ${ALL_SOURCES})
+target_link_libraries(wind-static PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+target_link_libraries(wind-static PRIVATE protobuf::libprotoc protobuf::libprotobuf protobuf::libprotobuf-lite)
 
-set(WIND_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/wind")
-set(WIND_LIBRARY_DIRS "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}/Wind")
+set(WIND_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
+set(WIND_LIBRARY_DIRS "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
 
-install(TARGETS WindShared WindStatic
+install(TARGETS wind
     LIBRARY DESTINATION ${WIND_LIBRARY_DIRS}
     ARCHIVE DESTINATION ${WIND_LIBRARY_DIRS}
 )
 
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/utils/
-    DESTINATION ${WIND_INCLUDE_DIR}/utils
-    FILES_MATCHING PATTERN "*.h"
-)
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/wind/
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     DESTINATION ${WIND_INCLUDE_DIR}
     FILES_MATCHING PATTERN "*.h"
 )
@@ -90,7 +84,7 @@ include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/wind-config.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/cmake/wind-config.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/wind-config.cmake
     INSTALL_DESTINATION ${WIND_LIBRARY_DIRS}/cmake/Wind
     PATH_VARS WIND_INCLUDE_DIR WIND_LIBRARY_DIRS
 )
@@ -98,7 +92,7 @@ configure_package_config_file(
 # Install wind-config.cmake and wind-config-version.cmake
 install(
     FILES
-        ${CMAKE_CURRENT_BINARY_DIR}/cmake/wind-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/wind-config.cmake
     DESTINATION
         ${WIND_LIBRARY_DIRS}/cmake/Wind
 )

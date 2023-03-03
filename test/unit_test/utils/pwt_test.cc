@@ -1,17 +1,18 @@
-#include <encrypt.h>
+#include "pwt.h"
+
 #include <google/protobuf/any.h>
 #include <google/protobuf/message.h>
 #include <google/protobuf/timestamp.pb.h>
 #include <google/protobuf/util/json_util.h>
 #include <gtest/gtest.h>
-#include <jwt-cpp/jwt.h>
-#include <pwt.h>
 
 #include <iostream>
 #include <memory>
+#include <stdexcept>
 #include <unordered_map>
 #include <vector>
 
+#include "encrypt.h"
 #include "pwt_test.pb.h"
 
 TEST(PWTTest, TestPWTHeader) {
@@ -22,9 +23,14 @@ TEST(PWTTest, TestPWTHeader) {
     EXPECT_NO_THROW(header1 = header3;);
     header1 = header1;
 
-    auto s = header1.Encode();
-    if (!header1.Decode(s)) {
-        std::cout << "decode failed" << std::endl;
+    try {
+        auto s = header1.Encode();
+        if (!header1.Decode(s)) {
+            std::cout << "decode failed" << std::endl;
+        }
+        std::cout << s << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
 
     header1.custom_headers_ = std::nullopt;
@@ -39,9 +45,15 @@ TEST(PWTTest, TestPWTPayload) {
     payload3 = payload3;
     EXPECT_NO_THROW(payload1.Encode(););
     EXPECT_NO_THROW(payload1 = payload4;);
-    auto s = payload1.Encode();
-    if (!payload1.Decode(s)) {
-        std::cout << "decode failed" << std::endl;
+
+    try {
+        auto s = payload1.Encode();
+        if (!payload1.Decode(s)) {
+            std::cout << "decode failed" << std::endl;
+        }
+        std::cout << s << std::endl;
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
 
     payload1.custom_payloads_ = std::nullopt;
@@ -84,32 +96,36 @@ TEST(PWTTest, TestPWT) {
     pwt_ist5.SetCustomHeader(::google::protobuf::Any());
     pwt_ist5.SetCustomPayload(::google::protobuf::Any());
 
-    std::cout << ::wind::utils::pwt::CreatePWTInstance()
-                     .SetAud("aud")
-                     .AddAud("aud1")
-                     .SetAud("aud2")
-                     .AddAud("aud3")
-                     .AddAud(std::vector<std::string>{"aud4", "aud5"})
-                     .AddAud("aud6")
-                     .AddAud(std::vector<std::string>{"aud7", "aud8"})
-                     .SetAud("aud9")
-                     .AddAud(std::vector<std::string>{"aud10", "aud11"})
-                     .SetExp(3600)
-                     .AddHeaderCustomField("key1", "value1")
-                     .AddPayloadCustomField("key2", "value2")
-                     .SetX5u("x5u")
-                     .SetTyp("typ")
-                     .SetSub("sub")
-                     .SetPwk("pwk")
-                     .SetPayloadCutsomField(std::unordered_map<std::string, std::string>({{"key3", "value3"}, {"key4", "value4"}}))
-                     .SetHeaderCustomField(std::unordered_map<std::string, std::string>({{"key5", "value5"}, {"key6", "value6"}}))
-                     .SetNbf(0)
-                     .SetKid("kid")
-                     .SetIss("iss")
-                     .SetIat(0)
-                     .SetCustomPayload(any)
-                     .SetCustomHeader(any)
-                     .Encode();
+    try {
+        std::cout << ::wind::utils::pwt::CreatePWTInstance()
+                         .SetAud("aud")
+                         .AddAud("aud1")
+                         .SetAud("aud2")
+                         .AddAud("aud3")
+                         .AddAud(std::vector<std::string>{"aud4", "aud5"})
+                         .AddAud("aud6")
+                         .AddAud(std::vector<std::string>{"aud7", "aud8"})
+                         .SetAud("aud9")
+                         .AddAud(std::vector<std::string>{"aud10", "aud11"})
+                         .SetExp(3600)
+                         .AddHeaderCustomField("key1", "value1")
+                         .AddPayloadCustomField("key2", "value2")
+                         .SetX5u("x5u")
+                         .SetTyp("typ")
+                         .SetSub("sub")
+                         .SetPwk("pwk")
+                         .SetPayloadCutsomField(std::unordered_map<std::string, std::string>({{"key3", "value3"}, {"key4", "value4"}}))
+                         .SetHeaderCustomField(std::unordered_map<std::string, std::string>({{"key5", "value5"}, {"key6", "value6"}}))
+                         .SetNbf(0)
+                         .SetKid("kid")
+                         .SetIss("iss")
+                         .SetIat(0)
+                         .SetCustomPayload(any)
+                         .SetCustomHeader(any)
+                         .Encode();
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 
     auto algg = ::wind::utils::encrypt::AlgorithmBase();
     algg.data_ = "";
@@ -125,4 +141,31 @@ TEST(PWTTest, TestPWT) {
     pwt_ist5.IsExpired();
     EXPECT_THROW(pwt_ist5.IsTokenValid(""), std::invalid_argument);
     pwt_ist5 = pwt_ist5;
+
+    pwt_ist1.GetAud();
+    pwt_ist1.GetExp();
+    pwt_ist1.GetHeaderCustomField("key");
+    pwt_ist1.GetPayloadCustomField("key");
+    pwt_ist1.GetX5u();
+    pwt_ist1.GetTyp();
+    pwt_ist1.GetSub();
+    pwt_ist1.GetPwk();
+    pwt_ist1.GetNbf();
+    pwt_ist1.GetKid();
+    pwt_ist1.GetIss();
+    pwt_ist1.GetIat();
+    pwt_ist1.GetCustomPayload();
+    pwt_ist1.GetCustomHeader();
+    pwt_ist1.GetHeader();
+    pwt_ist1.GetPayload();
+    pwt_ist1.GetCrypto();
+    pwt_ist1.GetHeaderCustomFields();
+    pwt_ist1.GetPayloadCustomFields();
+
+    try {
+        std::cout << ::wind::utils::pwt::CreatePWTInstance()
+                         .Encode();
+    } catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 }

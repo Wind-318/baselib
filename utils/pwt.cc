@@ -1,6 +1,7 @@
 /**
  * @file pwt.cc
  * @author Wind
+ * @link https://github.com/Wind-318/wind @endlink
  * @date 2023-02-21
  *
  * @copyright Copyright (c) 2023 Wind. All rights reserved.
@@ -37,7 +38,6 @@ namespace wind {
              * @note How to use:
              * @code
              * PWTHeaderBase header;
-             * header.SetTyp("PWT");
              * header.Encode();
              * @endcode
              */
@@ -136,6 +136,7 @@ namespace wind {
                 PayloadMessage payload_msg;
                 payload_msg.set_iss(iss_);
                 payload_msg.set_sub(sub_);
+
                 // Add aud
                 if (std::holds_alternative<std::string>(aud_)) {
                     payload_msg.set_aud(std::get<std::string>(aud_));
@@ -144,12 +145,14 @@ namespace wind {
                         payload_msg.add_aud_vec(aud);
                     }
                 }
+
                 // Add custom fields
                 for (const auto& [key, value] : custom_fields_) {
                     auto field = payload_msg.add_custom();
                     field->set_key(key);
                     field->set_value(value);
                 }
+
                 // Set exp, nbf, iat and pbi
                 if (exp_.has_value()) {
                     auto exp_msg = ::google::protobuf::Timestamp();
@@ -167,6 +170,7 @@ namespace wind {
                     payload_msg.set_allocated_iat(&iat_msg);
                 }
                 payload_msg.set_pbi(pbi_);
+
                 // Serialize the payload
                 InstanceMessage ist_msg;
                 try {

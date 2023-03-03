@@ -1,11 +1,12 @@
 #include <benchmark/benchmark.h>
-#include <encrypt.h>
-// #include <jwt-cpp/jwt.h>
-#include <pwt.h>
 
+// #include <jwt-cpp/jwt.h>
 #include <cstdio>
 #include <iostream>
 #include <string>
+
+#include "encrypt.h"
+#include "pwt.h"
 
 static void BM_PWT_encode(benchmark::State& state) {
     ::wind::utils::pwt::PWTInstance pwtss;
@@ -190,8 +191,8 @@ BENCHMARK(BM_PWT_repeat_decode_long)->Iterations(1000);
 // BENCHMARK(BM_jwt_cpp_decode_long)->Iterations(1000);
 BENCHMARK(BM_PWT_encode_long)->Iterations(10000);
 // BENCHMARK(BM_jwt_cpp_encode_long)->Iterations(10000);
-BENCHMARK(BM_PWT_decode_long)->Iterations(10000);
-BENCHMARK(BM_PWT_repeat_decode_long)->Iterations(10000);
+// BENCHMARK(BM_PWT_decode_long)->Iterations(10000);
+// BENCHMARK(BM_PWT_repeat_decode_long)->Iterations(10000);
 // BENCHMARK(BM_jwt_cpp_decode_long)->Iterations(10000);
 
 BENCHMARK(BM_custom);

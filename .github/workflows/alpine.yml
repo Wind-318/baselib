@@ -1,0 +1,31 @@
+name: Alpine
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-alpine:    
+    runs-on: ubuntu-latest # or any other OS
+    container:
+      image: alpine:latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3.3.0
+
+    - name: Install Dependencies
+      run: apk add --no-cache cmake gcc g++ make git openssl openssl-dev protobuf-dev protobuf
+
+    - name: Build project
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        make && make install
+    - name: Upload code coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: unittests
+        name: Coverage Report
+        token: ${{ secrets.CODECOV_TOKEN }}

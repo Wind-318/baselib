@@ -294,14 +294,14 @@ namespace wind {
          * @endcode
          */
         inline void range(const std::function<void(Key, T)>& f) noexcept {
-            std::shared_lock lock(mutex_);
+            std::unique_lock lock(mutex_);
             std::for_each(std::execution::par, map_.begin(), map_.end(), [&](auto& kv) {
                 f(kv.first, kv.second);
             });
         }
 
         inline void range_s(const std::function<void(Key, T)>& f) noexcept {
-            std::shared_lock lock(mutex_);
+            std::unique_lock lock(mutex_);
             std::for_each(map_.begin(), map_.end(), [&](auto& kv) {
                 f(kv.first, kv.second);
             });

@@ -55,6 +55,7 @@ Create a new token:
 ```cpp
 #include <wind/utils/pwt.h>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 int main() {
@@ -79,6 +80,7 @@ Get a new PWT object, encode and decode:
 ```cpp
 #include <wind/utils/pwt.h>
 #include <iostream>
+#include <stdexcept>
 #include <string>
 
 int main() {
@@ -150,4 +152,4 @@ and then run the wind_test executable. The benchmark results can see in [PWT ben
 
 ***
 ## License
-This library is licensed under the MIT License. See the [LICENSE](./LICENCE) file for more information.
+This library is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more information.

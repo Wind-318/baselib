@@ -1165,7 +1165,7 @@ namespace wind {
              * @tparam Algorithm The template parameter of PWTInstance, which must be derived from Algorithm.
              *
              * @note For optimal performance, it is recommended to configure the pool
-             * with an appropriate min and max size based on expected usage patterns.
+             * with an appropriate max size based on expected usage patterns.
              *
              * @todo Some functions of brief are not implemented.
              */

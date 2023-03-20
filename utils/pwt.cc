@@ -177,19 +177,19 @@ namespace wind {
 
                 // Set exp, nbf, iat and pbi
                 if (exp_.has_value()) {
-                    auto exp_msg = ::google::protobuf::Timestamp();
-                    exp_msg.CopyFrom(exp_.value());
-                    payload_msg.set_allocated_exp(&exp_msg);
+                    auto exp_msg = new ::google::protobuf::Timestamp();
+                    exp_msg->CopyFrom(exp_.value());
+                    payload_msg.set_allocated_exp(exp_msg);
                 }
                 if (nbf_.has_value()) {
-                    auto nbf_msg = ::google::protobuf::Timestamp();
-                    nbf_msg.CopyFrom(nbf_.value());
-                    payload_msg.set_allocated_nbf(&nbf_msg);
+                    auto nbf_msg = new ::google::protobuf::Timestamp();
+                    nbf_msg->CopyFrom(nbf_.value());
+                    payload_msg.set_allocated_nbf(nbf_msg);
                 }
                 if (iat_.has_value()) {
-                    auto iat_msg = ::google::protobuf::Timestamp();
-                    iat_msg.CopyFrom(iat_.value());
-                    payload_msg.set_allocated_iat(&iat_msg);
+                    auto iat_msg = new ::google::protobuf::Timestamp();
+                    iat_msg->CopyFrom(iat_.value());
+                    payload_msg.set_allocated_iat(iat_msg);
                 }
 
                 // Serialize the payload
@@ -200,9 +200,7 @@ namespace wind {
                         ist_msg.set_custom(custom_payload_->SerializeAsString());
                     }
                     auto result = ist_msg.SerializeAsString();
-                    auto _ = payload_msg.release_exp();
-                    _ = payload_msg.release_nbf();
-                    _ = payload_msg.release_iat();
+
                     return result;
                 } catch (const std::exception& e) {
                     throw;

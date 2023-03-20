@@ -69,7 +69,7 @@ static void BM_atomic_map_range_s_short(benchmark::State& state) {
     }
 }
 
-BENCHMARK(BM_atomic_map_range)->Iterations(1000);
-BENCHMARK(BM_atomic_map_range_s)->Iterations(1000);
-BENCHMARK(BM_atomic_map_range_short)->Iterations(1000);
-BENCHMARK(BM_atomic_map_range_s_short)->Iterations(1000);
+BENCHMARK(BM_atomic_map_range)->Iterations(10000);
+BENCHMARK(BM_atomic_map_range_s)->Iterations(10000);
+BENCHMARK(BM_atomic_map_range_short)->Iterations(10000);
+BENCHMARK(BM_atomic_map_range_s_short)->Iterations(10000);

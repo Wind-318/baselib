@@ -78,7 +78,7 @@ static void BM_pwt_pool_decode(benchmark::State& state) {
     }
 }
 
-BENCHMARK(BM_pwt_pool_encode)->Iterations(1000);
-BENCHMARK(BM_pwt_encode)->Iterations(1000);
-BENCHMARK(BM_pwt_pool_decode)->Iterations(1000);
-BENCHMARK(BM_pwt_decode)->Iterations(1000);
+BENCHMARK(BM_pwt_pool_encode)->Iterations(10000);
+BENCHMARK(BM_pwt_encode)->Iterations(10000);
+BENCHMARK(BM_pwt_pool_decode)->Iterations(10000);
+BENCHMARK(BM_pwt_decode)->Iterations(10000);

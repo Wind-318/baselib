@@ -4,384 +4,411 @@
 #include "pwt_test.pb.h"
 
 #include <algorithm>
-
-#include <google/protobuf/io/coded_stream.h>
-#include <google/protobuf/extension_set.h>
-#include <google/protobuf/wire_format_lite.h>
-#include <google/protobuf/descriptor.h>
-#include <google/protobuf/generated_message_reflection.h>
-#include <google/protobuf/reflection_ops.h>
-#include <google/protobuf/wire_format.h>
+#include "google/protobuf/io/coded_stream.h"
+#include "google/protobuf/extension_set.h"
+#include "google/protobuf/wire_format_lite.h"
+#include "google/protobuf/descriptor.h"
+#include "google/protobuf/generated_message_reflection.h"
+#include "google/protobuf/reflection_ops.h"
+#include "google/protobuf/wire_format.h"
+#include "google/protobuf/generated_message_tctable_impl.h"
 // @@protoc_insertion_point(includes)
-#include <google/protobuf/port_def.inc>
 
+// Must be included last.
+#include "google/protobuf/port_def.inc"
 PROTOBUF_PRAGMA_INIT_SEG
-
-namespace _pb = ::PROTOBUF_NAMESPACE_ID;
-namespace _pbi = _pb::internal;
-
-PROTOBUF_CONSTEXPR PWTMessageTest::PWTMessageTest(
-    ::_pbi::ConstantInitialized): _impl_{
-    /*decltype(_impl_.userid_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.username_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.password_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
-  , /*decltype(_impl_.timestamp_)*/nullptr
-  , /*decltype(_impl_._cached_size_)*/{}} {}
+namespace _pb = ::google::protobuf;
+namespace _pbi = ::google::protobuf::internal;
+namespace _fl = ::google::protobuf::internal::field_layout;
+        template <typename>
+PROTOBUF_CONSTEXPR PWTMessageTest::PWTMessageTest(::_pbi::ConstantInitialized)
+    : _impl_{
+      /*decltype(_impl_._has_bits_)*/ {},
+      /*decltype(_impl_._cached_size_)*/ {},
+      /*decltype(_impl_.userid_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.username_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.password_)*/ {
+          &::_pbi::fixed_address_empty_string,
+          ::_pbi::ConstantInitialized{},
+      },
+      /*decltype(_impl_.timestamp_)*/ nullptr,
+    } {}
 struct PWTMessageTestDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PWTMessageTestDefaultTypeInternal()
-      : _instance(::_pbi::ConstantInitialized{}) {}
+  PROTOBUF_CONSTEXPR PWTMessageTestDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
   ~PWTMessageTestDefaultTypeInternal() {}
   union {
     PWTMessageTest _instance;
   };
 };
-PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PWTMessageTestDefaultTypeInternal _PWTMessageTest_default_instance_;
-static ::_pb::Metadata file_level_metadata_pwt_5ftest_2eproto[1];
-static constexpr ::_pb::EnumDescriptor const** file_level_enum_descriptors_pwt_5ftest_2eproto = nullptr;
-static constexpr ::_pb::ServiceDescriptor const** file_level_service_descriptors_pwt_5ftest_2eproto = nullptr;
 
-const uint32_t TableStruct_pwt_5ftest_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.userid_),
-  PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.username_),
-  PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.password_),
-  PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.timestamp_),
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PWTMessageTestDefaultTypeInternal _PWTMessageTest_default_instance_;
+static ::_pb::Metadata file_level_metadata_pwt_5ftest_2eproto[1];
+static constexpr const ::_pb::EnumDescriptor**
+    file_level_enum_descriptors_pwt_5ftest_2eproto = nullptr;
+static constexpr const ::_pb::ServiceDescriptor**
+    file_level_service_descriptors_pwt_5ftest_2eproto = nullptr;
+const ::uint32_t TableStruct_pwt_5ftest_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(
+    protodesc_cold) = {
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_._has_bits_),
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _internal_metadata_),
+    ~0u,  // no _extensions_
+    ~0u,  // no _oneof_case_
+    ~0u,  // no _weak_field_map_
+    ~0u,  // no _inlined_string_donated_
+    ~0u,  // no _split_
+    ~0u,  // no sizeof(Split)
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.userid_),
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.username_),
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.password_),
+    PROTOBUF_FIELD_OFFSET(::PWTMessageTest, _impl_.timestamp_),
+    ~0u,
+    ~0u,
+    ~0u,
+    0,
 };
-static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, -1, sizeof(::PWTMessageTest)},
+
+static const ::_pbi::MigrationSchema
+    schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+        {0, 12, -1, sizeof(::PWTMessageTest)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
-  &::_PWTMessageTest_default_instance_._instance,
+    &::_PWTMessageTest_default_instance_._instance,
 };
-
-const char descriptor_table_protodef_pwt_5ftest_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\016pwt_test.proto\032\037google/protobuf/timest"
-  "amp.proto\"s\n\016PWTMessageTest\022\016\n\006userid\030\001 "
-  "\001(\t\022\020\n\010username\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022"
-  "-\n\ttimestamp\030\004 \001(\0132\032.google.protobuf.Tim"
-  "estampb\006proto3"
-  ;
-static const ::_pbi::DescriptorTable* const descriptor_table_pwt_5ftest_2eproto_deps[1] = {
-  &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
+const char descriptor_table_protodef_pwt_5ftest_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
+    "\n\016pwt_test.proto\032\037google/protobuf/timest"
+    "amp.proto\"s\n\016PWTMessageTest\022\016\n\006userid\030\001 "
+    "\001(\t\022\020\n\010username\030\002 \001(\t\022\020\n\010password\030\003 \001(\t\022"
+    "-\n\ttimestamp\030\004 \001(\0132\032.google.protobuf.Tim"
+    "estampb\006proto3"
 };
-static ::_pbi::once_flag descriptor_table_pwt_5ftest_2eproto_once;
+static const ::_pbi::DescriptorTable* const descriptor_table_pwt_5ftest_2eproto_deps[1] =
+    {
+        &::descriptor_table_google_2fprotobuf_2ftimestamp_2eproto,
+};
+static ::absl::once_flag descriptor_table_pwt_5ftest_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_pwt_5ftest_2eproto = {
-    false, false, 174, descriptor_table_protodef_pwt_5ftest_2eproto,
+    false,
+    false,
+    174,
+    descriptor_table_protodef_pwt_5ftest_2eproto,
     "pwt_test.proto",
-    &descriptor_table_pwt_5ftest_2eproto_once, descriptor_table_pwt_5ftest_2eproto_deps, 1, 1,
-    schemas, file_default_instances, TableStruct_pwt_5ftest_2eproto::offsets,
-    file_level_metadata_pwt_5ftest_2eproto, file_level_enum_descriptors_pwt_5ftest_2eproto,
+    &descriptor_table_pwt_5ftest_2eproto_once,
+    descriptor_table_pwt_5ftest_2eproto_deps,
+    1,
+    1,
+    schemas,
+    file_default_instances,
+    TableStruct_pwt_5ftest_2eproto::offsets,
+    file_level_metadata_pwt_5ftest_2eproto,
+    file_level_enum_descriptors_pwt_5ftest_2eproto,
     file_level_service_descriptors_pwt_5ftest_2eproto,
 };
+
+// This function exists to be marked as weak.
+// It can significantly speed up compilation by breaking up LLVM's SCC
+// in the .pb.cc translation units. Large translation units see a
+// reduction of more than 35% of walltime for optimized builds. Without
+// the weak attribute all the messages in the file, including all the
+// vtables and everything they use become part of the same SCC through
+// a cycle like:
+// GetMetadata -> descriptor table -> default instances ->
+//   vtables -> GetMetadata
+// By adding a weak function here we break the connection from the
+// individual vtables back into the descriptor table.
 PROTOBUF_ATTRIBUTE_WEAK const ::_pbi::DescriptorTable* descriptor_table_pwt_5ftest_2eproto_getter() {
   return &descriptor_table_pwt_5ftest_2eproto;
 }
-
 // Force running AddDescriptors() at dynamic initialization time.
-PROTOBUF_ATTRIBUTE_INIT_PRIORITY2 static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_pwt_5ftest_2eproto(&descriptor_table_pwt_5ftest_2eproto);
-
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY2
+static ::_pbi::AddDescriptorsRunner dynamic_init_dummy_pwt_5ftest_2eproto(&descriptor_table_pwt_5ftest_2eproto);
 // ===================================================================
 
 class PWTMessageTest::_Internal {
  public:
-  static const ::PROTOBUF_NAMESPACE_ID::Timestamp& timestamp(const PWTMessageTest* msg);
+  using HasBits = decltype(std::declval<PWTMessageTest>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+    8 * PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_._has_bits_);
+  static const ::google::protobuf::Timestamp& timestamp(const PWTMessageTest* msg);
+  static void set_has_timestamp(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
 };
 
-const ::PROTOBUF_NAMESPACE_ID::Timestamp&
-PWTMessageTest::_Internal::timestamp(const PWTMessageTest* msg) {
+const ::google::protobuf::Timestamp& PWTMessageTest::_Internal::timestamp(const PWTMessageTest* msg) {
   return *msg->_impl_.timestamp_;
 }
 void PWTMessageTest::clear_timestamp() {
-  if (GetArenaForAllocation() == nullptr && _impl_.timestamp_ != nullptr) {
-    delete _impl_.timestamp_;
-  }
-  _impl_.timestamp_ = nullptr;
+  if (_impl_.timestamp_ != nullptr) _impl_.timestamp_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
 }
-PWTMessageTest::PWTMessageTest(::PROTOBUF_NAMESPACE_ID::Arena* arena,
-                         bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor(arena, is_message_owned);
+PWTMessageTest::PWTMessageTest(::google::protobuf::Arena* arena)
+    : ::google::protobuf::Message(arena) {
+  SharedCtor(arena);
   // @@protoc_insertion_point(arena_constructor:PWTMessageTest)
 }
-PWTMessageTest::PWTMessageTest(const PWTMessageTest& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message() {
-  PWTMessageTest* const _this = this; (void)_this;
+PWTMessageTest::PWTMessageTest(const PWTMessageTest& from) : ::google::protobuf::Message() {
+  PWTMessageTest* const _this = this;
+  (void)_this;
   new (&_impl_) Impl_{
-      decltype(_impl_.userid_){}
-    , decltype(_impl_.username_){}
-    , decltype(_impl_.password_){}
-    , decltype(_impl_.timestamp_){nullptr}
-    , /*decltype(_impl_._cached_size_)*/{}};
-
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+      decltype(_impl_._has_bits_){from._impl_._has_bits_},
+      /*decltype(_impl_._cached_size_)*/ {},
+      decltype(_impl_.userid_){},
+      decltype(_impl_.username_){},
+      decltype(_impl_.password_){},
+      decltype(_impl_.timestamp_){nullptr},
+  };
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
   _impl_.userid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.userid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.userid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_userid().empty()) {
-    _this->_impl_.userid_.Set(from._internal_userid(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.userid_.Set(from._internal_userid(), _this->GetArenaForAllocation());
   }
   _impl_.username_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.username_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.username_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_username().empty()) {
-    _this->_impl_.username_.Set(from._internal_username(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.username_.Set(from._internal_username(), _this->GetArenaForAllocation());
   }
   _impl_.password_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.password_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.password_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_password().empty()) {
-    _this->_impl_.password_.Set(from._internal_password(), 
-      _this->GetArenaForAllocation());
+    _this->_impl_.password_.Set(from._internal_password(), _this->GetArenaForAllocation());
   }
-  if (from._internal_has_timestamp()) {
-    _this->_impl_.timestamp_ = new ::PROTOBUF_NAMESPACE_ID::Timestamp(*from._impl_.timestamp_);
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_impl_.timestamp_ = new ::google::protobuf::Timestamp(*from._impl_.timestamp_);
   }
+
   // @@protoc_insertion_point(copy_constructor:PWTMessageTest)
 }
-
-inline void PWTMessageTest::SharedCtor(
-    ::_pb::Arena* arena, bool is_message_owned) {
+inline void PWTMessageTest::SharedCtor(::_pb::Arena* arena) {
   (void)arena;
-  (void)is_message_owned;
   new (&_impl_) Impl_{
-      decltype(_impl_.userid_){}
-    , decltype(_impl_.username_){}
-    , decltype(_impl_.password_){}
-    , decltype(_impl_.timestamp_){nullptr}
-    , /*decltype(_impl_._cached_size_)*/{}
+      decltype(_impl_._has_bits_){},
+      /*decltype(_impl_._cached_size_)*/ {},
+      decltype(_impl_.userid_){},
+      decltype(_impl_.username_){},
+      decltype(_impl_.password_){},
+      decltype(_impl_.timestamp_){nullptr},
   };
   _impl_.userid_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.userid_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.userid_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.username_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.username_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.username_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   _impl_.password_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    _impl_.password_.Set("", GetArenaForAllocation());
-  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        _impl_.password_.Set("", GetArenaForAllocation());
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
-
 PWTMessageTest::~PWTMessageTest() {
   // @@protoc_insertion_point(destructor:PWTMessageTest)
-  if (auto *arena = _internal_metadata_.DeleteReturnArena<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>()) {
-  (void)arena;
-    return;
-  }
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-
 inline void PWTMessageTest::SharedDtor() {
-  GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  ABSL_DCHECK(GetArenaForAllocation() == nullptr);
   _impl_.userid_.Destroy();
   _impl_.username_.Destroy();
   _impl_.password_.Destroy();
   if (this != internal_default_instance()) delete _impl_.timestamp_;
 }
-
 void PWTMessageTest::SetCachedSize(int size) const {
   _impl_._cached_size_.Set(size);
 }
 
-void PWTMessageTest::Clear() {
+PROTOBUF_NOINLINE void PWTMessageTest::Clear() {
 // @@protoc_insertion_point(message_clear_start:PWTMessageTest)
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   _impl_.userid_.ClearToEmpty();
   _impl_.username_.ClearToEmpty();
   _impl_.password_.ClearToEmpty();
-  if (GetArenaForAllocation() == nullptr && _impl_.timestamp_ != nullptr) {
-    delete _impl_.timestamp_;
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.timestamp_ != nullptr);
+    _impl_.timestamp_->Clear();
   }
-  _impl_.timestamp_ = nullptr;
-  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+  _impl_._has_bits_.Clear();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
-const char* PWTMessageTest::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    uint32_t tag;
-    ptr = ::_pbi::ReadTag(ptr, &tag);
-    switch (tag >> 3) {
-      // string userid = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
-          auto str = _internal_mutable_userid();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "PWTMessageTest.userid"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string username = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 18)) {
-          auto str = _internal_mutable_username();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "PWTMessageTest.username"));
-        } else
-          goto handle_unusual;
-        continue;
-      // string password = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 26)) {
-          auto str = _internal_mutable_password();
-          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(ptr);
-          CHK_(::_pbi::VerifyUTF8(str, "PWTMessageTest.password"));
-        } else
-          goto handle_unusual;
-        continue;
-      // .google.protobuf.Timestamp timestamp = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 34)) {
-          ptr = ctx->ParseMessage(_internal_mutable_timestamp(), ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
-      default:
-        goto handle_unusual;
-    }  // switch
-  handle_unusual:
-    if ((tag == 0) || ((tag & 7) == 4)) {
-      CHK_(ptr);
-      ctx->SetLastTag(tag);
-      goto message_done;
-    }
-    ptr = UnknownFieldParse(
-        tag,
-        _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
-        ptr, ctx);
-    CHK_(ptr != nullptr);
-  }  // while
-message_done:
+const char* PWTMessageTest::_InternalParse(
+    const char* ptr, ::_pbi::ParseContext* ctx) {
+  ptr = ::_pbi::TcParser::ParseLoop(this, ptr, ctx, &_table_.header);
   return ptr;
-failure:
-  ptr = nullptr;
-  goto message_done;
-#undef CHK_
 }
 
-uint8_t* PWTMessageTest::_InternalSerialize(
-    uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 1, 45, 2> PWTMessageTest::_table_ = {
+  {
+    PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_._has_bits_),
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    1,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    &_PWTMessageTest_default_instance_._instance,
+    ::_pbi::TcParser::GenericFallback,  // fallback
+  }, {{
+    // .google.protobuf.Timestamp timestamp = 4;
+    {::_pbi::TcParser::FastMtS1,
+     {34, 0, 0, PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.timestamp_)}},
+    // string userid = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.userid_)}},
+    // string username = 2;
+    {::_pbi::TcParser::FastUS1,
+     {18, 63, 0, PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.username_)}},
+    // string password = 3;
+    {::_pbi::TcParser::FastUS1,
+     {26, 63, 0, PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.password_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string userid = 1;
+    {PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.userid_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string username = 2;
+    {PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.username_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // string password = 3;
+    {PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.password_), -1, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // .google.protobuf.Timestamp timestamp = 4;
+    {PROTOBUF_FIELD_OFFSET(PWTMessageTest, _impl_.timestamp_), _Internal::kHasBitsOffset + 0, 0,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::google::protobuf::Timestamp>()},
+  }}, {{
+    "\16\6\10\10\0\0\0\0"
+    "PWTMessageTest"
+    "userid"
+    "username"
+    "password"
+  }},
+};
+
+::uint8_t* PWTMessageTest::_InternalSerialize(
+    ::uint8_t* target,
+    ::google::protobuf::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:PWTMessageTest)
-  uint32_t cached_has_bits = 0;
-  (void) cached_has_bits;
+  ::uint32_t cached_has_bits = 0;
+  (void)cached_has_bits;
 
   // string userid = 1;
   if (!this->_internal_userid().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_userid().data(), static_cast<int>(this->_internal_userid().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PWTMessageTest.userid");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_userid(), target);
+    const std::string& _s = this->_internal_userid();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "PWTMessageTest.userid");
+    target = stream->WriteStringMaybeAliased(1, _s, target);
   }
 
   // string username = 2;
   if (!this->_internal_username().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_username().data(), static_cast<int>(this->_internal_username().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PWTMessageTest.username");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_username(), target);
+    const std::string& _s = this->_internal_username();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "PWTMessageTest.username");
+    target = stream->WriteStringMaybeAliased(2, _s, target);
   }
 
   // string password = 3;
   if (!this->_internal_password().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_password().data(), static_cast<int>(this->_internal_password().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "PWTMessageTest.password");
-    target = stream->WriteStringMaybeAliased(
-        3, this->_internal_password(), target);
+    const std::string& _s = this->_internal_password();
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+        _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "PWTMessageTest.password");
+    target = stream->WriteStringMaybeAliased(3, _s, target);
   }
 
+  cached_has_bits = _impl_._has_bits_[0];
   // .google.protobuf.Timestamp timestamp = 4;
-  if (this->_internal_has_timestamp()) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+  if (cached_has_bits & 0x00000001u) {
+    target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessage(4, _Internal::timestamp(this),
         _Internal::timestamp(this).GetCachedSize(), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+    target =
+        ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+            _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
   }
   // @@protoc_insertion_point(serialize_to_array_end:PWTMessageTest)
   return target;
 }
 
-size_t PWTMessageTest::ByteSizeLong() const {
+::size_t PWTMessageTest::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:PWTMessageTest)
-  size_t total_size = 0;
+  ::size_t total_size = 0;
 
-  uint32_t cached_has_bits = 0;
+  ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
   // string userid = 1;
   if (!this->_internal_userid().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_userid());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_userid());
   }
 
   // string username = 2;
   if (!this->_internal_username().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_username());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_username());
   }
 
   // string password = 3;
   if (!this->_internal_password().empty()) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_password());
+    total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                    this->_internal_password());
   }
 
   // .google.protobuf.Timestamp timestamp = 4;
-  if (this->_internal_has_timestamp()) {
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+      ::google::protobuf::internal::WireFormatLite::MessageSize(
         *_impl_.timestamp_);
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData PWTMessageTest::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
+const ::google::protobuf::Message::ClassData PWTMessageTest::_class_data_ = {
+    ::google::protobuf::Message::CopyWithSourceCheck,
     PWTMessageTest::MergeImpl
 };
-const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*PWTMessageTest::GetClassData() const { return &_class_data_; }
+const ::google::protobuf::Message::ClassData*PWTMessageTest::GetClassData() const { return &_class_data_; }
 
 
-void PWTMessageTest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+void PWTMessageTest::MergeImpl(::google::protobuf::Message& to_msg, const ::google::protobuf::Message& from_msg) {
   auto* const _this = static_cast<PWTMessageTest*>(&to_msg);
   auto& from = static_cast<const PWTMessageTest&>(from_msg);
   // @@protoc_insertion_point(class_specific_merge_from_start:PWTMessageTest)
-  GOOGLE_DCHECK_NE(&from, _this);
-  uint32_t cached_has_bits = 0;
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_userid().empty()) {
@@ -393,11 +420,11 @@ void PWTMessageTest::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const :
   if (!from._internal_password().empty()) {
     _this->_internal_set_password(from._internal_password());
   }
-  if (from._internal_has_timestamp()) {
-    _this->_internal_mutable_timestamp()->::PROTOBUF_NAMESPACE_ID::Timestamp::MergeFrom(
+  if ((from._impl_._has_bits_[0] & 0x00000001u) != 0) {
+    _this->_internal_mutable_timestamp()->::google::protobuf::Timestamp::MergeFrom(
         from._internal_timestamp());
   }
-  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void PWTMessageTest::CopyFrom(const PWTMessageTest& from) {
@@ -407,7 +434,7 @@ void PWTMessageTest::CopyFrom(const PWTMessageTest& from) {
   MergeFrom(from);
 }
 
-bool PWTMessageTest::IsInitialized() const {
+PROTOBUF_NOINLINE bool PWTMessageTest::IsInitialized() const {
   return true;
 }
 
@@ -416,34 +443,25 @@ void PWTMessageTest::InternalSwap(PWTMessageTest* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.userid_, lhs_arena,
-      &other->_impl_.userid_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.username_, lhs_arena,
-      &other->_impl_.username_, rhs_arena
-  );
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &_impl_.password_, lhs_arena,
-      &other->_impl_.password_, rhs_arena
-  );
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.userid_, lhs_arena,
+                                       &other->_impl_.userid_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.username_, lhs_arena,
+                                       &other->_impl_.username_, rhs_arena);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.password_, lhs_arena,
+                                       &other->_impl_.password_, rhs_arena);
   swap(_impl_.timestamp_, other->_impl_.timestamp_);
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata PWTMessageTest::GetMetadata() const {
+::google::protobuf::Metadata PWTMessageTest::GetMetadata() const {
   return ::_pbi::AssignDescriptors(
       &descriptor_table_pwt_5ftest_2eproto_getter, &descriptor_table_pwt_5ftest_2eproto_once,
       file_level_metadata_pwt_5ftest_2eproto[0]);
 }
-
 // @@protoc_insertion_point(namespace_scope)
-PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::PWTMessageTest*
-Arena::CreateMaybeMessage< ::PWTMessageTest >(Arena* arena) {
-  return Arena::CreateMessageInternal< ::PWTMessageTest >(arena);
-}
-PROTOBUF_NAMESPACE_CLOSE
-
+namespace google {
+namespace protobuf {
+}  // namespace protobuf
+}  // namespace google
 // @@protoc_insertion_point(global_scope)
-#include <google/protobuf/port_undef.inc>
+#include "google/protobuf/port_undef.inc"

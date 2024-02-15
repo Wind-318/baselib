@@ -1,6 +1,6 @@
 # Wind C++ Utils
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://www.codacy.com/gh/Wind-318/wind/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Wind-318/wind&amp;utm_campaign=Badge_Grade) [![codecov](https://img.shields.io/codecov/c/github/Wind-318/wind)](https://codecov.io/gh/Wind-318/wind) [![LICENCE](https://img.shields.io/github/license/Wind-318/wind)](./LICENCE) [![workflow](https://img.shields.io/github/actions/workflow/status/Wind-318/wind/alpine.yml)](https://github.com/Wind-318/wind/actions) [![alpine](https://img.shields.io/badge/alpine-passing-brightgreen)](https://github.com/Wind-318/wind/actions/workflows/alpine.yml) [![stars](https://img.shields.io/github/stars/Wind-318/wind?style=plastic)](https://github.com/Wind-318/wind/stargazers) [![Download](https://img.shields.io/github/downloads/Wind-318/wind/total)](https://github.com/Wind-318/wind/releases/)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2fd79761fbd446fb9c85377bf2b9820d)](https://app.codacy.com/gh/Wind-318/baselib/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![LICENCE](https://img.shields.io/github/license/Wind-318/baselib)](./LICENSE) [![workflow](https://img.shields.io/github/actions/workflow/status/Wind-318/baselib/alpine.yml)](https://github.com/Wind-318/baselib/actions) [![alpine](https://img.shields.io/badge/alpine-passing-brightgreen)](https://github.com/Wind-318/baselib/actions/workflows/alpine.yml) [![stars](https://img.shields.io/github/stars/Wind-318/baselib?style=plastic)](https://github.com/Wind-318/baselib/stargazers) [![Download](https://img.shields.io/github/downloads/Wind-318/baselib/total)](https://github.com/Wind-318/baselib/releases/)
 
 ## PWT - Protobuf Web Token
 Written in C++17, the PWT namespace uses Protocol Buffers (protobuf) and OpenSSL to efficiently encode and decode complex network tokens. It provides a simple and efficient solution for handling long web tokens.
@@ -20,7 +20,7 @@ Written in C++17, the PWT namespace uses Protocol Buffers (protobuf) and OpenSSL
 
   - Download the library using git:
     ```
-    git clone https://github.com/Wind-318/wind.git
+    git clone https://github.com/Wind-318/baselib.git
     ```
   - Build the library using CMake::
     ```
